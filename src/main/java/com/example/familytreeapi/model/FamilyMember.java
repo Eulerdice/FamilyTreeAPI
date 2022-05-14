@@ -30,6 +30,15 @@ public class FamilyMember {
         private List<FamilyMember> children = new ArrayList<>();
     }
 
+    public List<FamilyMember> getDescendants() {
+        List<FamilyMember> descendants = new ArrayList<>();
+        children.forEach(child -> {
+            descendants.add(child);
+            descendants.addAll(child.getDescendants());
+        });
+        return descendants;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
