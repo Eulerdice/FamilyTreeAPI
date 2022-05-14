@@ -16,8 +16,8 @@ public class FamilyMember {
     private String firstName;
     private Gender gender;
 
-    private FamilyMember father;
-    private FamilyMember mother;
+    private FamilyMember firstParent;
+    private FamilyMember secondParent;
     private List<FamilyMember> children;
 
     public static class FamilyMemberBuilder {
@@ -25,8 +25,8 @@ public class FamilyMember {
         private String firstName = "firstName";
         private Gender gender = Gender.MALE;
 
-        private FamilyMember father = null;
-        private FamilyMember mother = null;
+        private FamilyMember firstParent = null;
+        private FamilyMember secondParent = null;
         private List<FamilyMember> children = new ArrayList<>();
     }
 
