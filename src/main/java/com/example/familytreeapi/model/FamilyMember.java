@@ -1,6 +1,7 @@
 package com.example.familytreeapi.model;
 
 import lombok.*;
+import net.minidev.json.annotate.JsonIgnore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,13 +12,20 @@ import java.util.Random;
 @Setter
 @Builder(builderClassName = "FamilyMemberBuilder")
 @AllArgsConstructor
+@ToString
 public class FamilyMember {
+    @JsonIgnore
     private Long id;
+
     private String firstName;
     private Gender gender;
-
+    @JsonIgnore
     private FamilyMember firstParent;
+
+    @JsonIgnore
     private FamilyMember secondParent;
+
+    @JsonIgnore
     private List<FamilyMember> children;
 
     public static class FamilyMemberBuilder {
