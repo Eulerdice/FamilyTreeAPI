@@ -30,6 +30,27 @@ public class FamilyMember {
         private List<FamilyMember> children = new ArrayList<>();
     }
 
+    public List<FamilyMember> getAncestors() {
+        List<FamilyMember> ancestors = new ArrayList<>();
+        if(firstParent != null) {
+            ancestors.add(firstParent);
+            firstParent.getAncestors().forEach(parentAncestor -> {
+                if(!ancestors.contains(parentAncestor)) {
+                    ancestors.add(parentAncestor);
+                }
+            });
+        }
+        if(secondParent != null) {
+            ancestors.add(secondParent);
+            secondParent.getAncestors().forEach(parentAncestor -> {
+                if(!ancestors.contains(parentAncestor)) {
+                    ancestors.add(parentAncestor);
+                }
+            });
+        }
+        return ancestors;
+    }
+
     public List<FamilyMember> getDescendants() {
         List<FamilyMember> descendants = new ArrayList<>();
         children.forEach(child -> {
