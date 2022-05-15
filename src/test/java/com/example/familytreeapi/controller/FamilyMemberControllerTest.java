@@ -3,7 +3,6 @@ package com.example.familytreeapi.controller;
 import com.example.familytreeapi.model.FamilyMember;
 import com.example.familytreeapi.model.Gender;
 import com.example.familytreeapi.repository.InMemoryFamilyTree;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -12,17 +11,14 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 class FamilyMemberControllerTest {
-    ObjectMapper objectMapper = new ObjectMapper();
-
     @Autowired
-    InMemoryFamilyTree inMemoryFamilyTree;
+    private InMemoryFamilyTree inMemoryFamilyTree;
 
     @Autowired
     private MockMvc mockMvc;
@@ -115,7 +111,6 @@ class FamilyMemberControllerTest {
 
         this.mockMvc.perform(get("/api/family_member/descendants").param("id", firstParent.getId().toString()))
                 .andExpect(status().isOk())
-                .andDo(print())
                 .andExpect(jsonPath("$.length()", is(3)));
     }
     //endregion
