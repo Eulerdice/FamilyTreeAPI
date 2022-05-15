@@ -77,7 +77,7 @@ public class FamilyTreeControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstParent.firstName", is(firstParent.getFirstName())))
                 .andExpect(jsonPath("$.secondParent.firstName", is(secondParent.getFirstName())))
-                .andExpect(jsonPath("$.familyMembers.length()", is(3)));
+                .andExpect(jsonPath("$.firstName", is(childParam.getFirstName())));
     }
 
     @Test

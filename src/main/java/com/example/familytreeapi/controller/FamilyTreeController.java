@@ -27,6 +27,13 @@ public class FamilyTreeController {
         this.familyTree = familyTree;
     }
 
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity getCurrentFamilyTree() {
+        // Mostly used for debugging purposes
+        return ResponseEntity.ok(familyTree);
+    }
+
     @PostMapping(value = "/new", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity initialiseFamilyTree(@RequestBody ParentsParam parents) {
@@ -87,7 +94,7 @@ public class FamilyTreeController {
         FamilyMember child = new FamilyMember(new Random().nextLong(), childParam.getFirstName(), childParam.getGender(), firstParent, secondParent, new ArrayList<>());
 
         try {
-            familyTree.addChild(child);
+            return ResponseEntity.ok(familyTree.addChild(child));
         } catch (IllegalArgumentException e) {
             LOGGER.info("Failed to initialise new family tree due to the input error: " + e.getMessage());
             return new ResponseEntity<>(
@@ -99,7 +106,5 @@ public class FamilyTreeController {
                     "Failed to initialise new family tree due to an unexpected error: " + e.getMessage(),
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        return ResponseEntity.ok(this.familyTree);
     }
 }

@@ -1,0 +1,190 @@
+{
+	"info": {
+		"_postman_id": "6389941c-813f-4766-b90f-8ee4b39689d1",
+		"name": "FamilyTree API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Add Child",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"SecondDegreeChild\",\r\n    \"gender\": \"female\",\r\n    \"firstParentId\": \"6389948365741838913\",\r\n    \"secondParentId\": \"-1308137313419426559\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/family_tree/add_child",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"family_tree",
+						"add_child"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Initialise Family Tree",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstParent\": {\r\n        \"firstName\": \"Alex\",\r\n        \"gender\": \"Male\"\r\n    },\r\n    \"secondParent\": {\r\n        \"firstName\": \"Ana\",\r\n        \"gender\": \"Female\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/family_tree/new",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"family_tree",
+						"new"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Parents for child",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/family_member/parents?id=5530245586473889274",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"family_member",
+						"parents"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "5530245586473889274"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Children",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/family_member/children?id=-510659999878018448",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"family_member",
+						"children"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "-510659999878018448"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Descendants",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/family_member/descendants?id=-510659999878018448",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"family_member",
+						"descendants"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "-510659999878018448"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Ancestors",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/family_member/ancestors?id=7547653832882248325",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"family_member",
+						"ancestors"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "7547653832882248325"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Current Family Tree",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/family_tree",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"family_tree"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
