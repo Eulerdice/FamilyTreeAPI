@@ -48,9 +48,9 @@ public class FamilyMemberController {
         Optional<FamilyMember> familyMemberOptional = familyTree.findById(id);
 
         if(familyMemberOptional.isEmpty()) {
-            LOGGER.info("Failed to find child with id=" + id + " in family tree");
+            LOGGER.info("Failed to find family member with id=" + id + " in family tree");
             return new ResponseEntity<>(
-                    "Failed to find child with id=" + id + " in family tree",
+                    "Failed to find family member with id=" + id + " in family tree",
                     HttpStatus.BAD_REQUEST);
         } else {
             FamilyMember familyMember = familyMemberOptional.get();
