@@ -26,6 +26,7 @@ public class FamilyTreeControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    //region new
     @Test
     public void givenTwoParents_whenNewMethod_thenNewFamilyTreeInitalised() throws Exception {
         FamilyMember firstParent = FamilyMember.builder().gender(Gender.MALE).build();
@@ -51,8 +52,9 @@ public class FamilyTreeControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("Failed to initialise new family tree due to the input error: Missing either firstParent or secondParent from the request"));
     }
+    //endregion
 
-
+    //region addChild
     @Test
     public void givenInitialisedTreeAndValidChild_whenAddChild_thenChildIsAddedToFamilyTree() throws Exception {
         // Initialise tree
@@ -88,4 +90,5 @@ public class FamilyTreeControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("Failed to add child because Family tree was not initialised. Please use /api/family_tree/new first"));
     }
+    //endregion
 }

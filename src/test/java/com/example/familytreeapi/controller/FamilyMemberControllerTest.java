@@ -27,6 +27,7 @@ class FamilyMemberControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    //region getParents
     @Test
     public void givenFamilyTreeInitialisedAndChildInTree_whenGetParents_thenParentsAreReturned() throws Exception {
         // Initialise tree
@@ -51,7 +52,9 @@ class FamilyMemberControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("Failed to find child with id="+child.getId()+" in family tree"));
     }
+    //endregion
 
+    //region getChildren
     @Test
     public void givenFamilyTreeInitialisedAndParentInTreeWithNoChildren_whenGetChildren_thenEmptyListIsReturned() throws Exception {
         // Initialise tree
@@ -79,7 +82,9 @@ class FamilyMemberControllerTest {
                 .andExpect(jsonPath("$.length()", is(1)))
                 .andExpect(jsonPath("$[0].id", is(child.getId())));
     }
+    //endregion
 
+    //region getDescendants
     @Test
     public void givenFamilyTreeInitialisedAndParentInTreeWithNoChildren_whenGetDescendants_thenEmptyListIsReturned() throws Exception {
         // Initialise tree
@@ -113,4 +118,40 @@ class FamilyMemberControllerTest {
                 .andDo(print())
                 .andExpect(jsonPath("$.length()", is(3)));
     }
+    //endregion
+
+    //region getAncestors
+    @Test
+    public void givenFamilyTreeInitialisedAndFamilyMemberWithNoAncestors_whenGetAncestors_thenEmptyListIsReturned() throws Exception {
+        // Initialise tree
+        FamilyMember firstParent = FamilyMember.builder().gender(Gender.MALE).build();
+        FamilyMember secondParent = FamilyMember.builder().gender(Gender.FEMALE).build();
+        inMemoryFamilyTree.initialiseNewTree(firstParent, secondParent);
+
+        this.mockMvc.perform(get("/api/family_member/ancestors").param("id", firstParent.getId().toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()", is(0)));
+    }
+
+    @Test
+    public void givenFamilyTreeInitialisedAndFamilyMemberWithMultipleAncestors_whenGetAncestors_thenAllAncestorsAreReturned() throws Exception {
+        // Initialise tree
+        FamilyMember firstParent = FamilyMember.builder().gender(Gender.MALE).build();
+        FamilyMember secondParent = FamilyMember.builder().gender(Gender.FEMALE).build();
+        inMemoryFamilyTree.initialiseNewTree(firstParent, secondParent);
+
+        FamilyMember child = FamilyMember.builder().firstParent(firstParent).secondParent(secondParent).build();
+        inMemoryFamilyTree.addChild(child);
+
+        FamilyMember child2 = FamilyMember.builder().gender(Gender.FEMALE).firstParent(firstParent).secondParent(secondParent).build();
+        inMemoryFamilyTree.addChild(child2);
+
+        FamilyMember child1Child2Child = FamilyMember.builder().firstParent(child).secondParent(child2).build();
+        inMemoryFamilyTree.addChild(child1Child2Child);
+
+        this.mockMvc.perform(get("/api/family_member/ancestors").param("id", child1Child2Child.getId().toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()", is(4)));
+    }
+    //endregion
 }

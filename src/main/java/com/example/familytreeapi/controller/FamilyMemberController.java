@@ -79,4 +79,22 @@ public class FamilyMemberController {
             return ResponseEntity.ok(familyMember.getDescendants());
         }
     }
+
+    @GetMapping(value = "/ancestors", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity getAncestors(@RequestParam Long id) {
+        Optional<FamilyMember> familyMemberOptional = familyTree.findById(id);
+
+        if(familyMemberOptional.isEmpty()) {
+            LOGGER.info("Failed to find family member with id=" + id + " in family tree");
+            return new ResponseEntity<>(
+                    "Failed to find family member with id=" + id + " in family tree",
+                    HttpStatus.BAD_REQUEST);
+        } else {
+            FamilyMember familyMember = familyMemberOptional.get();
+
+            LOGGER.info("Received request to get ancestors of family member:" + familyMember);
+            return ResponseEntity.ok(familyMember.getAncestors());
+        }
+    }
 }

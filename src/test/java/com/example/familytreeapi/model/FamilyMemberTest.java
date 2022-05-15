@@ -10,6 +10,7 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
 
 class FamilyMemberTest {
+    //region getDescendants
     @Test
     public void givenFamilyMemberWithNoDescendants_whenGetDescendants_thenEmptyListIsReturned() {
         FamilyMember familyMember = FamilyMember.builder().build();
@@ -55,7 +56,9 @@ class FamilyMemberTest {
         List<FamilyMember> actual = familyMember.getDescendants();
         assertThat(actual, containsInAnyOrder(expected.toArray()));
     }
+    //endregion
 
+    //region getAncestors
     @Test
     public void givenInitialFamilyTreeParent_whenGetAncestors_thenEmptyListIsReturned() {
         FamilyMember firstParent = FamilyMember.builder().gender(Gender.MALE).build();
@@ -90,6 +93,6 @@ class FamilyMemberTest {
         List<FamilyMember> actual = child.getAncestors();
         assertThat(actual, containsInAnyOrder(expected.toArray()));
     }
-
+    //endregsion
 
 }

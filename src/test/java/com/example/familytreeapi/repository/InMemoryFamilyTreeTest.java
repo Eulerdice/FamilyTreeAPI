@@ -10,8 +10,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class InMemoryFamilyTreeTest {
 
+    //region initialiseNewTree
     @Test
-    public void givenMaleAndFemaleParents_whenFamilyTreeConstructor_thenNewFamilyTreeIsCreatedWithGivenParents() {
+    public void givenMaleAndFemaleParents_whenFamilyTreeInitialise_thenNewFamilyTreeIsCreatedWithGivenParents() {
         FamilyMember firstParent = FamilyMember.builder().gender(Gender.MALE).build();
         FamilyMember secondParent = FamilyMember.builder().gender(Gender.FEMALE).build();
         InMemoryFamilyTree familyTree = new InMemoryFamilyTree();
@@ -22,7 +23,7 @@ class InMemoryFamilyTreeTest {
     }
 
     @Test
-    public void givenTwoMaleParents_whenFamilyTreeConstructor_thenExceptionIsRaised() {
+    public void givenTwoMaleParents_whenFamilyTreeInitialise_thenExceptionIsRaised() {
         FamilyMember firstParent = FamilyMember.builder().gender(Gender.MALE).build();
         FamilyMember secondParent = FamilyMember.builder().gender(Gender.MALE).build();
 
@@ -36,7 +37,7 @@ class InMemoryFamilyTreeTest {
     }
 
     @Test
-    public void givenTwoFemaleParents_whenFamilyTreeConstructor_thenExceptionIsRaised() {
+    public void givenTwoFemaleParents_whenFamilyTreeInitialise_thenExceptionIsRaised() {
         FamilyMember father = FamilyMember.builder().gender(Gender.FEMALE).build();
         FamilyMember mother = FamilyMember.builder().gender(Gender.FEMALE).build();
 
@@ -47,7 +48,9 @@ class InMemoryFamilyTreeTest {
 
         assertThat(actualMessage, is(expectedMessage));
     }
+    //endregion
 
+    //region isFamilyMember
     @Test
     public void givenFamilyTreeAndFamilyMemberNotInTree_whenIsFamilyMember_thenFalse() {
         FamilyMember firstParent = FamilyMember.builder().gender(Gender.MALE).build();
@@ -73,7 +76,9 @@ class InMemoryFamilyTreeTest {
         Boolean actual = familyTree.isFamilyMember(firstParent) && familyTree.isFamilyMember(secondParent);
         assertThat(actual, is(expected));
     }
+    //endregion
 
+    //region addChild
     @Test
     public void givenChildFromIntialFamilyTreeParents_whenAddChild_thenChildIsAddedToFamilyTreeAndReturned() {
         FamilyMember firstParent = FamilyMember.builder().gender(Gender.MALE).build();
@@ -192,4 +197,5 @@ class InMemoryFamilyTreeTest {
         String actualMessage = exception.getMessage();
         assertThat(actualMessage, is(expectedMessage));
     }
+    //endregion
 }
