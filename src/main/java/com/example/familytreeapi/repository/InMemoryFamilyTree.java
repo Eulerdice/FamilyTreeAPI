@@ -3,25 +3,32 @@ package com.example.familytreeapi.repository;
 import com.example.familytreeapi.model.FamilyMember;
 import com.example.familytreeapi.model.Gender;
 import lombok.Getter;
+import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Getter
+@Component
 public class InMemoryFamilyTree {
-    private final FamilyMember firstParent;
-    private final FamilyMember secondParent;
-    private final List<FamilyMember> familyMembers;
+    private FamilyMember firstParent;
+    private FamilyMember secondParent;
+    private Map<Long, FamilyMember> familyMembers;
 
     public InMemoryFamilyTree(FamilyMember firstParent, FamilyMember secondParent) {
         checkValidParentsGenderOrThrowException(firstParent, secondParent);
 
-        this.familyMembers = new ArrayList<>();
-        this.familyMembers.add(firstParent);
-        this.familyMembers.add(secondParent);
+        this.familyMembers = new HashMap<>();
+        this.familyMembers.put(firstParent.getId(), firstParent);
+        this.familyMembers.put(secondParent.getId(), secondParent);
 
         this.firstParent = firstParent;
         this.secondParent = secondParent;
+    }
+
+    public InMemoryFamilyTree() {
+        this.firstParent = null;
+        this.secondParent = null;
+        this.familyMembers = new HashMap<>();
     }
 
     public FamilyMember addChild(FamilyMember child) {
@@ -34,13 +41,17 @@ public class InMemoryFamilyTree {
         // Update parents' direct children lists and add child to familyMembers
         child.getFirstParent().getChildren().add(child);
         child.getSecondParent().getChildren().add(child);
-        familyMembers.add(child);
+        familyMembers.put(child.getId(), child);
 
         return child;
     }
 
     public Boolean isFamilyMember(FamilyMember familyMember) {
-        return familyMember != null && familyMembers.contains(familyMember);
+        return familyMember != null && familyMembers.values().contains(familyMember);
+    }
+
+    public Optional<FamilyMember> findById(Long id) {
+        return Optional.ofNullable(familyMembers.get(id));
     }
 
     private void checkValidParentsGenderOrThrowException(FamilyMember firstParent, FamilyMember secondParent) {

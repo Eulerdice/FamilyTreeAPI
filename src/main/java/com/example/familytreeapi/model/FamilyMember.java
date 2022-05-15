@@ -1,5 +1,6 @@
 package com.example.familytreeapi.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
 
@@ -26,6 +27,8 @@ public class FamilyMember {
     private FamilyMember secondParent;
 
     @JsonIgnore
+    @ToString.Exclude
+    @JsonBackReference
     private List<FamilyMember> children;
 
     public static class FamilyMemberBuilder {
@@ -38,6 +41,7 @@ public class FamilyMember {
         private List<FamilyMember> children = new ArrayList<>();
     }
 
+    @JsonBackReference
     public List<FamilyMember> getAncestors() {
         List<FamilyMember> ancestors = new ArrayList<>();
         if(firstParent != null) {
@@ -59,6 +63,7 @@ public class FamilyMember {
         return ancestors;
     }
 
+    @JsonBackReference
     public List<FamilyMember> getDescendants() {
         List<FamilyMember> descendants = new ArrayList<>();
         children.forEach(child -> {
