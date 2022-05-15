@@ -39,7 +39,21 @@ class FamilyMemberTest {
 
         List<FamilyMember> expected = List.of(child, childDescendant1, childDescendant2);
         List<FamilyMember> actual = familyMember.getDescendants();
-        assertThat(actual, is(expected));
+        assertThat(actual, containsInAnyOrder(expected.toArray()));
+    }
+
+    @Test
+    public void givenFamilyMemberWithMultipleChildrenAndChildOfChildren_whenGetDescendants_thenListOfAllDescendantsIsReturned() {
+        FamilyMember childDescendant1 = FamilyMember.builder().build();
+
+        FamilyMember child1 = FamilyMember.builder().children(List.of(childDescendant1)).build();
+        FamilyMember child2 = FamilyMember.builder().children(List.of(childDescendant1)).build();
+
+        FamilyMember familyMember = FamilyMember.builder().children(List.of(child1, child2)).build();
+
+        List<FamilyMember> expected = List.of(child1, child2, childDescendant1);
+        List<FamilyMember> actual = familyMember.getDescendants();
+        assertThat(actual, containsInAnyOrder(expected.toArray()));
     }
 
     @Test
@@ -60,7 +74,7 @@ class FamilyMemberTest {
 
         List<FamilyMember> expected = List.of(firstParent, secondParent);
         List<FamilyMember> actual = child.getAncestors();
-        assertThat(actual, is(expected));
+        assertThat(actual, containsInAnyOrder(expected.toArray()));
     }
 
     @Test

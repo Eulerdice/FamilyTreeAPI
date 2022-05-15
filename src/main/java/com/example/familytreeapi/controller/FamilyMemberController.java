@@ -37,6 +37,8 @@ public class FamilyMemberController {
                     HttpStatus.BAD_REQUEST);
         } else {
             FamilyMember child = childOptional.get();
+
+            LOGGER.info("Received request to get parents of child:" + child);
             ParentsParam parentsParam = new ParentsParam(child.getFirstParent(), child.getSecondParent());
             return ResponseEntity.ok(parentsParam);
         }
@@ -54,7 +56,27 @@ public class FamilyMemberController {
                     HttpStatus.BAD_REQUEST);
         } else {
             FamilyMember familyMember = familyMemberOptional.get();
+
+            LOGGER.info("Received request to get children of family member:" + familyMember);
             return ResponseEntity.ok(familyMember.getChildren());
+        }
+    }
+
+    @GetMapping(value = "/descendants", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity getDescendants(@RequestParam Long id) {
+        Optional<FamilyMember> familyMemberOptional = familyTree.findById(id);
+
+        if(familyMemberOptional.isEmpty()) {
+            LOGGER.info("Failed to find family member with id=" + id + " in family tree");
+            return new ResponseEntity<>(
+                    "Failed to find family member with id=" + id + " in family tree",
+                    HttpStatus.BAD_REQUEST);
+        } else {
+            FamilyMember familyMember = familyMemberOptional.get();
+
+            LOGGER.info("Received request to get descendants of family member:" + familyMember);
+            return ResponseEntity.ok(familyMember.getDescendants());
         }
     }
 }

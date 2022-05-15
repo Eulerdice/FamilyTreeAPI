@@ -68,7 +68,11 @@ public class FamilyMember {
         List<FamilyMember> descendants = new ArrayList<>();
         children.forEach(child -> {
             descendants.add(child);
-            descendants.addAll(child.getDescendants());
+            child.getDescendants().forEach(descendant -> {
+                if(!descendants.contains(descendant)) {
+                    descendants.add(descendant);
+                }
+            });
         });
         return descendants;
     }
