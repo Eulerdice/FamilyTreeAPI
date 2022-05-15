@@ -14,7 +14,8 @@ class InMemoryFamilyTreeTest {
     public void givenMaleAndFemaleParents_whenFamilyTreeConstructor_thenNewFamilyTreeIsCreatedWithGivenParents() {
         FamilyMember firstParent = FamilyMember.builder().gender(Gender.MALE).build();
         FamilyMember secondParent = FamilyMember.builder().gender(Gender.FEMALE).build();
-        InMemoryFamilyTree familyTree = new InMemoryFamilyTree(firstParent, secondParent);
+        InMemoryFamilyTree familyTree = new InMemoryFamilyTree();
+        familyTree.initialiseNewTree(firstParent, secondParent);
 
         assertThat(familyTree.getFirstParent(), is(firstParent));
         assertThat(familyTree.getSecondParent(), is(secondParent));
@@ -25,7 +26,8 @@ class InMemoryFamilyTreeTest {
         FamilyMember firstParent = FamilyMember.builder().gender(Gender.MALE).build();
         FamilyMember secondParent = FamilyMember.builder().gender(Gender.MALE).build();
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> new InMemoryFamilyTree(firstParent, secondParent));
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> new InMemoryFamilyTree().initialiseNewTree(firstParent, secondParent));
 
         String expectedMessage = "One parent must be female";
         String actualMessage = exception.getMessage();
@@ -38,7 +40,7 @@ class InMemoryFamilyTreeTest {
         FamilyMember father = FamilyMember.builder().gender(Gender.FEMALE).build();
         FamilyMember mother = FamilyMember.builder().gender(Gender.FEMALE).build();
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> new InMemoryFamilyTree(father, mother));
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> new InMemoryFamilyTree().initialiseNewTree(father, mother));
 
         String expectedMessage = "One parent must be male";
         String actualMessage = exception.getMessage();
@@ -50,7 +52,8 @@ class InMemoryFamilyTreeTest {
     public void givenFamilyTreeAndFamilyMemberNotInTree_whenIsFamilyMember_thenFalse() {
         FamilyMember firstParent = FamilyMember.builder().gender(Gender.MALE).build();
         FamilyMember secondParent = FamilyMember.builder().gender(Gender.FEMALE).build();
-        InMemoryFamilyTree familyTree = new InMemoryFamilyTree(firstParent, secondParent);
+        InMemoryFamilyTree familyTree = new InMemoryFamilyTree();
+        familyTree.initialiseNewTree(firstParent, secondParent);
 
         FamilyMember outsideMember = FamilyMember.builder().build();
 
@@ -63,7 +66,8 @@ class InMemoryFamilyTreeTest {
     public void givenFamilyTreeAndFamilyMemberIsEitherFamilyParent_whenIsFamilyMember_thenTrue() {
         FamilyMember firstParent = FamilyMember.builder().gender(Gender.MALE).build();
         FamilyMember secondParent = FamilyMember.builder().gender(Gender.FEMALE).build();
-        InMemoryFamilyTree familyTree = new InMemoryFamilyTree(firstParent, secondParent);
+        InMemoryFamilyTree familyTree = new InMemoryFamilyTree();
+        familyTree.initialiseNewTree(firstParent, secondParent);
 
         Boolean expected = true;
         Boolean actual = familyTree.isFamilyMember(firstParent) && familyTree.isFamilyMember(secondParent);
@@ -74,7 +78,8 @@ class InMemoryFamilyTreeTest {
     public void givenChildFromIntialFamilyTreeParents_whenAddChild_thenChildIsAddedToFamilyTreeAndReturned() {
         FamilyMember firstParent = FamilyMember.builder().gender(Gender.MALE).build();
         FamilyMember secondParent = FamilyMember.builder().gender(Gender.FEMALE).build();
-        InMemoryFamilyTree familyTree = new InMemoryFamilyTree(firstParent, secondParent);
+        InMemoryFamilyTree familyTree = new InMemoryFamilyTree();
+        familyTree.initialiseNewTree(firstParent, secondParent);
 
         FamilyMember newChild = FamilyMember.builder().firstParent(firstParent).secondParent(secondParent).build();
 
@@ -87,7 +92,8 @@ class InMemoryFamilyTreeTest {
     public void givenChildFromFamilyTreeParents_whenAddChildSuccessful_thenParentsChildrenListsAreUpdated() {
         FamilyMember firstParent = FamilyMember.builder().gender(Gender.MALE).build();
         FamilyMember secondParent = FamilyMember.builder().gender(Gender.FEMALE).build();
-        InMemoryFamilyTree familyTree = new InMemoryFamilyTree(firstParent, secondParent);
+        InMemoryFamilyTree familyTree = new InMemoryFamilyTree();
+        familyTree.initialiseNewTree(firstParent, secondParent);
 
         FamilyMember newChild = FamilyMember.builder().firstParent(firstParent).secondParent(secondParent).build();
         familyTree.addChild(newChild);
@@ -101,7 +107,8 @@ class InMemoryFamilyTreeTest {
     public void givenChildFromFamilyTreeParentsChildren_whenAddChild_thenChildIsAddedToFamilyTreeAndReturned() {
         FamilyMember firstParent = FamilyMember.builder().gender(Gender.MALE).build();
         FamilyMember secondParent = FamilyMember.builder().gender(Gender.FEMALE).build();
-        InMemoryFamilyTree familyTree = new InMemoryFamilyTree(firstParent, secondParent);
+        InMemoryFamilyTree familyTree = new InMemoryFamilyTree();
+        familyTree.initialiseNewTree(firstParent, secondParent);
 
         FamilyMember child1 = FamilyMember.builder().gender(Gender.MALE).firstParent(firstParent).secondParent(secondParent).build();
         FamilyMember child2 = FamilyMember.builder().gender(Gender.FEMALE).firstParent(firstParent).secondParent(secondParent).build();
@@ -119,7 +126,8 @@ class InMemoryFamilyTreeTest {
     public void givenChildFromTwoMaleParentsFromFamilyTree_whenAddChild_thenExceptionIsThrown() {
         FamilyMember firstParent = FamilyMember.builder().gender(Gender.MALE).build();
         FamilyMember secondParent = FamilyMember.builder().gender(Gender.FEMALE).build();
-        InMemoryFamilyTree familyTree = new InMemoryFamilyTree(firstParent, secondParent);
+        InMemoryFamilyTree familyTree = new InMemoryFamilyTree();
+        familyTree.initialiseNewTree(firstParent, secondParent);
 
         FamilyMember badMaleParent = FamilyMember.builder().gender(Gender.MALE).firstParent(firstParent).secondParent(secondParent).build();
         familyTree.addChild(badMaleParent);
@@ -136,7 +144,8 @@ class InMemoryFamilyTreeTest {
     public void givenChildFromTwoFemaleParentsFromFamilyTree_whenAddChild_thenExceptionIsThrown() {
         FamilyMember firstParent = FamilyMember.builder().gender(Gender.MALE).build();
         FamilyMember secondParent = FamilyMember.builder().gender(Gender.FEMALE).build();
-        InMemoryFamilyTree familyTree = new InMemoryFamilyTree(firstParent, secondParent);
+        InMemoryFamilyTree familyTree = new InMemoryFamilyTree();
+        familyTree.initialiseNewTree(firstParent, secondParent);
 
         FamilyMember badFemaleParent = FamilyMember.builder().gender(Gender.FEMALE).firstParent(firstParent).secondParent(secondParent).build();
         familyTree.addChild(badFemaleParent);
@@ -153,7 +162,8 @@ class InMemoryFamilyTreeTest {
     public void givenChildFromParentsNotInFamilyTree_whenAddChild_thenExceptionIsThrown() {
         FamilyMember firstParent = FamilyMember.builder().gender(Gender.MALE).build();
         FamilyMember secondParent = FamilyMember.builder().gender(Gender.FEMALE).build();
-        InMemoryFamilyTree familyTree = new InMemoryFamilyTree(firstParent, secondParent);
+        InMemoryFamilyTree familyTree = new InMemoryFamilyTree();
+        familyTree.initialiseNewTree(firstParent, secondParent);
 
         FamilyMember badFirstParent = FamilyMember.builder().gender(Gender.MALE).build();
         FamilyMember badSecondParent = FamilyMember.builder().gender(Gender.FEMALE).build();
@@ -170,7 +180,8 @@ class InMemoryFamilyTreeTest {
     public void givenChildFromOneParentInFamilyTreeAndOtherNot_whenAddChild_thenExceptionIsThrown() {
         FamilyMember firstParent = FamilyMember.builder().gender(Gender.MALE).build();
         FamilyMember secondParent = FamilyMember.builder().gender(Gender.FEMALE).build();
-        InMemoryFamilyTree familyTree = new InMemoryFamilyTree(firstParent, secondParent);
+        InMemoryFamilyTree familyTree = new InMemoryFamilyTree();
+        familyTree.initialiseNewTree(firstParent, secondParent);
 
         FamilyMember badSecondParent = FamilyMember.builder().gender(Gender.FEMALE).build();
 

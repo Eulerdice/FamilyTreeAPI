@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Optional;
 import java.util.Random;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -21,7 +20,7 @@ import java.util.logging.Logger;
 public class FamilyTreeController {
     private static final Logger LOGGER = LogManager.getLogManager().getLogger("");
 
-    private InMemoryFamilyTree familyTree;
+    private final InMemoryFamilyTree familyTree;
 
     @Autowired
     public FamilyTreeController(InMemoryFamilyTree familyTree) {
@@ -44,7 +43,7 @@ public class FamilyTreeController {
 
         try {
             LOGGER.info("Initialising Tree with parents - firstParent:" + firstParent + ", secondParent:" +secondParent);
-            this.familyTree = new InMemoryFamilyTree(firstParent, secondParent);
+            this.familyTree.initialiseNewTree(firstParent, secondParent);
         } catch (IllegalArgumentException e) {
             LOGGER.info("Failed to initialise new family tree due to the input error: " + e.getMessage());
             return new ResponseEntity<>(

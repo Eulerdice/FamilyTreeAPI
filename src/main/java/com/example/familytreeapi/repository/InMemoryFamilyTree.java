@@ -14,7 +14,13 @@ public class InMemoryFamilyTree {
     private FamilyMember secondParent;
     private Map<Long, FamilyMember> familyMembers;
 
-    public InMemoryFamilyTree(FamilyMember firstParent, FamilyMember secondParent) {
+    public InMemoryFamilyTree() {
+        this.firstParent = null;
+        this.secondParent = null;
+        this.familyMembers = new HashMap<>();
+    }
+
+    public void initialiseNewTree(FamilyMember firstParent, FamilyMember secondParent) {
         checkValidParentsGenderOrThrowException(firstParent, secondParent);
 
         this.familyMembers = new HashMap<>();
@@ -23,12 +29,6 @@ public class InMemoryFamilyTree {
 
         this.firstParent = firstParent;
         this.secondParent = secondParent;
-    }
-
-    public InMemoryFamilyTree() {
-        this.firstParent = null;
-        this.secondParent = null;
-        this.familyMembers = new HashMap<>();
     }
 
     public FamilyMember addChild(FamilyMember child) {
