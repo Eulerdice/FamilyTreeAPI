@@ -25,7 +25,7 @@ public class FamilyMemberController {
         this.familyTree = familyTree;
     }
 
-    @GetMapping(value = "/get_parents", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/parents", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity getParents(@RequestParam Long id) {
         Optional<FamilyMember> childOptional = familyTree.findById(id);
@@ -39,6 +39,22 @@ public class FamilyMemberController {
             FamilyMember child = childOptional.get();
             ParentsParam parentsParam = new ParentsParam(child.getFirstParent(), child.getSecondParent());
             return ResponseEntity.ok(parentsParam);
+        }
+    }
+
+    @GetMapping(value = "/children", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity getChildren(@RequestParam Long id) {
+        Optional<FamilyMember> familyMemberOptional = familyTree.findById(id);
+
+        if(familyMemberOptional.isEmpty()) {
+            LOGGER.info("Failed to find child with id=" + id + " in family tree");
+            return new ResponseEntity<>(
+                    "Failed to find child with id=" + id + " in family tree",
+                    HttpStatus.BAD_REQUEST);
+        } else {
+            FamilyMember familyMember = familyMemberOptional.get();
+            return ResponseEntity.ok(familyMember.getChildren());
         }
     }
 }

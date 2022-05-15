@@ -36,7 +36,7 @@ class FamilyMemberControllerTest {
         FamilyMember child = FamilyMember.builder().firstParent(firstParent).secondParent(secondParent).build();
         inMemoryFamilyTree.addChild(child);
 
-        this.mockMvc.perform(get("/api/family_member/get_parents").param("id", child.getId().toString()))
+        this.mockMvc.perform(get("/api/family_member/parents").param("id", child.getId().toString()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstParent.id", is(firstParent.getId())))
                 .andExpect(jsonPath("$.secondParent.id", is(secondParent.getId())));
@@ -46,9 +46,36 @@ class FamilyMemberControllerTest {
     public void givenChildNotInFamilyTree_whenFindParents_thenErrorThrown() throws Exception {
         FamilyMember child = FamilyMember.builder().build();
 
-        this.mockMvc.perform(get("/api/family_member/get_parents").param("id", child.getId().toString()))
+        this.mockMvc.perform(get("/api/family_member/parents").param("id", child.getId().toString()))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("Failed to find child with id="+child.getId()+" in family tree"));
     }
 
+    @Test
+    public void givenFamilyTreeInitialisedAndParentInTreeWithNoChildren_whenFindChildren_thenEmptyListIsReturned() throws Exception {
+        // Initialise tree
+        FamilyMember firstParent = FamilyMember.builder().gender(Gender.MALE).build();
+        FamilyMember secondParent = FamilyMember.builder().gender(Gender.FEMALE).build();
+        inMemoryFamilyTree.initialiseNewTree(firstParent, secondParent);
+
+        this.mockMvc.perform(get("/api/family_member/children").param("id", firstParent.getId().toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()", is(0)));
+    }
+
+    @Test
+    public void givenFamilyTreeInitialisedAndParentInTreeWithOneChild_whenFindChildren_thenListWithChildIsReturned() throws Exception {
+        // Initialise tree
+        FamilyMember firstParent = FamilyMember.builder().gender(Gender.MALE).build();
+        FamilyMember secondParent = FamilyMember.builder().gender(Gender.FEMALE).build();
+        inMemoryFamilyTree.initialiseNewTree(firstParent, secondParent);
+
+        FamilyMember child = FamilyMember.builder().firstParent(firstParent).secondParent(secondParent).build();
+        inMemoryFamilyTree.addChild(child);
+
+        this.mockMvc.perform(get("/api/family_member/children").param("id", firstParent.getId().toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()", is(1)))
+                .andExpect(jsonPath("$[0].id", is(child.getId())));
+    }
 }
